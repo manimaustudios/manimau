@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Words - Terms of Service</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            margin: 10px 0;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        .back-to-top:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Terms of Service</h1>
+        <p><strong>Last Updated: April 07, 2025</strong></p>
+
+        <p>Welcome to Urban Words (the "Game"), provided by Manimai Studios ("we," "us," or "our"). By accessing or using the Game, you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use the Game.</p>
+
+        <h2>1. Use of the Game</h2>
+        <p>You may use the Game for personal, non-commercial purposes only. You agree not to:</p>
+        <ul>
+            <li>Modify, reverse-engineer, or hack the Game.</li>
+            <li>Use the Game for any illegal or unauthorized purpose.</li>
+            <li>Interfere with the Game’s operation or other users’ enjoyment.</li>
+        </ul>
+
+        <h2>2. Intellectual Property</h2>
+        <p>The Game, including its design, text, graphics, and code, is owned by Manimai Studios and protected by copyright and other laws. You may not copy, distribute, or create derivative works without our permission.</p>
+
+        <h2>3. Third-Party Services</h2>
+        <p>The Game uses Firebase Analytics for usage data and Google AdMob for advertisements. These services are governed by their own terms:</p>
+        <ul>
+            <li><a href="https://firebase.google.com/terms" target="_blank">Firebase Terms</a></li>
+            <li><a href="https://www.google.com/admob/terms" target="_blank">AdMob Terms</a></li>
+        </ul>
+
+        <h2>4. Advertisements</h2>
+        <p>The Game may display ads via Google AdMob. We are not responsible for the content of these ads or any interactions you have with third-party advertisers.</p>
+
+        <h2>5. Disclaimer of Warranties</h2>
+        <p>The Game is provided "as is" without warranties of any kind. We do not guarantee that the Game will be error-free, secure, or available at all times.</p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>Manimai Studios will not be liable for any indirect, incidental, or consequential damages arising from your use of the Game, including loss of data or profits.</p>
+
+        <h2>7. Termination</h2>
+        <p>We may terminate or suspend your access to the Game at our discretion, without notice, for any reason, including violation of these Terms.</p>
+
+        <h2>8. Changes to These Terms</h2>
+        <p>We may update these Terms from time to time. Changes will be posted here with an updated "Last Updated" date. Continued use of the Game after changes constitutes acceptance of the new Terms.</p>
+
+        <h2>9. Governing Law</h2>
+        <p>These Terms are governed by the laws of [Insert Jurisdiction, e.g., California, USA]. Any disputes will be resolved in the courts of that jurisdiction.</p>
+
+        <h2>10. Contact Us</h2>
+        <p>For questions about these Terms, contact us at: <a href="mailto:support@manimaustudios.com">support@manimaustudios.com</a>.</p>
+    </div>
+
+    <div class="back-to-top" onclick="scrollToTop()">Back to Top</div>
+
+    <script>
+        window.onscroll = function() {
+            let backToTop = document.querySelector('.back-to-top');
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTop.style.display = "block";
+            } else {
+                backToTop.style.display = "none";
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
