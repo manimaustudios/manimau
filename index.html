@@ -1,271 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8"/>
-
 <head>
-    
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manimau Studios - AI, Apps & Digital Experiences</title>
 
-    <title>Manimau Studios - Singapore's Leading App & Game Studio</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Manimau Studios is Singapore's premier app and game development studio specializing in AI-powered digital experiences, mobile apps, and immersive games." />
+    <meta name="keywords" content="App Development, Game Studio, AI Solutions, Mobile Apps, Singapore, Digital Experiences, AI-Powered Apps, Game Development Studio" />
+    <meta name="author" content="Manimau Studios" />
+    <link rel="canonical" href="https://www.manimau.com/" />
 
-		<meta name="description" content="Manimau Studios is singapore's leading Mobile App and Game Marketing Studio"/>
-		<meta name="keywords" content="singapore digital, Manimau, singapore app agency, app marketing, singapore developer, singapore game developer, singapore app development"/>
-		<meta name="author" content="Justin Lee"/>
-		
-		<!-- <link rel="shortcut icon" href="img/favicon.png">  -->
-		
-		<link rel="stylesheet" type="text/css" href="css/reset.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/style-responsive.css" />				
-		
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Manimau Studios - AI, Apps & Digital Experiences" />
+    <meta property="og:description" content="Singapore's leading app and game studio crafting AI-powered digital experiences and engaging games for all ages." />
+    <meta property="og:url" content="https://www.manimau.com/" />
+    <!-- Replace with your own image URL -->
+    <meta property="og:image" content="https://www.manimau.com/og-image.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Manimau Studios - AI, Apps & Digital Experiences" />
+    <meta name="twitter:description" content="Singapore's premier app and game development studio specializing in AI-powered solutions and engaging games." />
+    <meta name="twitter:image" content="https://www.manimau.com/twitter-image.jpg" />
+    <meta name="twitter:site" content="@ManimauStudios" />
+
+    <!-- Fonts and Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-color: #00aaff;
+            --background-color: #0a0a1a;
+            --surface-color: #1a1a2e;
+            --text-color: #e0e0e0;
+            --text-secondary-color: #a0a0b0;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navbar */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-secondary-color);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-family);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background: #0099e6;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 6rem 0;
+            position: relative;
+            background: transparent;
+        }
+
+        .content-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+
+        /* About Section */
+        .about-content {
+            text-align: center;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: var(--text-secondary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--surface-color);
+            padding: 2.5rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 170, 255, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .service-card p {
+            color: var(--text-secondary-color);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            gap: 3rem;
+            background: var(--surface-color);
+            padding: 3rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-form {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #0a0a1a;
+            color: var(--text-color);
+            font-family: var(--font-family);
+        }
+
+        .contact-info h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .main-footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                padding: 0;
+            }
+            
+            .nav-links li {
+                margin: 0 0.75rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <!-- Structured Data JSON-LD -->
+  
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://www.manimau.com/",
+      "name": "Manimau Studios",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.manimau.com/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 </head>
-
 <body>
 
-<div class="container">
+    <div id="canvas-container"></div>
 
+    <header class="main-header">
+        <nav class="navbar" role="navigation" aria-label="Primary Navigation">
+            <a href="#hero" class="logo">Manimau Studios</a>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<!-- section start-page -->
-
-  <section class="start-page parallax-background" id="home">
-  
-    <div class="opacity"></div>
-      <div class="content">
-        <div class="text">
-        
-          <h1>Manimau Studios<br/>
-         <span>App & Game Development Studio</span></h1>
-          <p>Advertising - Apps - Games</p>
-          
-          <a href="#about-us"><div class="read-more">What We do</div></a>
-          
-        </div>
-        <div class="arrow-down"></div>
-      </div>
-  
-  </section>
-
-  <!-- section menu mobile -->
-  
-  <section class="menu-media">
-  
-    <div class="menu-content">
-    
-      <div class="logo">Services</div>
-      
-      <div class="icon"><a href="#"><img src="img/icons/menu-media.png"/></a></div>
-    
-    </div>
-   
-  </section>
-  
-    <ul class="menu-click">
-        <a href="#home"><li href="#home">HOME</li></a>
-        <a href="#about-us"><li href="#about-us">ABOUT US</li></a>
-        <!-- <a href="#portfolio"><li href="#portfolio">APPS</li></a> -->
-        <a href="#contact"><li href="#contact">CONTACT</li></a>
-        
-    </ul>
-   
-   
-  <!-- section menu -->
-  
-  <section class="menu">
-
-    <div class="menu-content">
-    
-    <div class="logo">Services</div>
-    
-      <ul id="menu">
-        <li><a href="#home">HOME</a></li>
-        <li><a href="#about-us">ABOUT US</a></li>
-        <!-- <li><a href="#portfolio">APPS</a></li> -->
-        <li><a href="#contact">CONTACT</a></li>
-      </ul>
-    </div>
-  
-  
-  </section>
-
-
-  <!-- section about us -->
-  
-  <section class="about-us" id="about-us">
-  
-    <h1>ABOUT US</h1>
-    <hr/>
-    <p class="title">We are Singapore's Young App Development and Game Studio. </p>
-  
-      <div class="column-one">
-  
-        <div class="circle-one"></div>
-    
-          <h2>App<br/>Advertising</h2>
-          <p>Promote Apps via App Store Advertising</p>
-    
-      </div>
-  
-      <div class="column-two">
-  
-        <div class="circle-two"></div>
-    
-          <h2>App<br/>Development</h2>
-          <p>Building the futuristic apps and games for a better tomorrow</p>
-    
-      </div>
-  
-  
-      <div class="column-three">
-  
-        <div class="circle-three"></div>
-    
-        <h2>Game<br/>Studio</h2>
-        <p>Building engaging fun games for all ages</p>
-    
-    </div>  
-    
-
-  </section>
-  
-  <div class="clear"></div>  
-
-  <!-- portoflio-->
-
- 
-  
-   <div class="clear"></div>  
-  
-  
-  
-  
-    <!-- partners-->
-
-    <section class="partners parallax-background-partners" id="partners">
-    
-    <div class="opacity"></div>
-    
-      <div class="content">
-      
-        <h2>Premium Partners</h2>
-        
-            <div class="logo">
-          
-                <a href="#"><img src="img/logos/avazu.jpg"></a>
-                <a href="#"><img src="img/logos/appodeal.png"></a>
-                <a href="#"><img src="img/logos/matomy.jpg"></a>
-            
-               
-              
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <h1>AI-Powered Digital Experiences & Apps</h1>
+                <p>We are a leading App & Game Development Studio, specializing in futuristic applications, AI-driven solutions, and engaging games for a better tomorrow.</p>
+                <a href="#contact" class="cta-button">Start a Project</a>
             </div>
-      
-      </div>
+        </section>
 
-    </section>
+        <section id="about" class="content-section">
+            <div class="container">
+                <h2>About Us</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Singapore's Premier App & Game Studio</h3>
+                        <p>We are Singapore's young and dynamic app development and game studio. Our passion is to build engaging, fun games for all ages and develop the futuristic apps that will shape our world. We thrive on innovation and excellence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section id="services" class="content-section">
+            <div class="container">
+            <h2>What We Do</h2>
+            <div class="services-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="service-card" style="padding: 1.5rem;">
+                <div class="service-icon" style="font-size: 2rem;">📱</div>
+                <h3 style="font-size: 1.2rem;">App Development</h3>
+                <p style="font-size: 0.9rem;">We specialize in building sleek, high-performance mobile and web applications for a better tomorrow.</p>
+                </div>
+                <div class="service-card" style="padding: 1.5rem;">
+                <div class="service-icon" style="font-size: 2rem;">🧠</div>
+                <h3 style="font-size: 1.2rem;">AI & Research</h3>
+                <p style="font-size: 0.9rem;">We build intelligent, AI-powered solutions. From research and data analysis to automation, we leverage AI to give your products a competitive edge.</p>
+                </div>
+                <div class="service-card" style="padding: 1.5rem;">
+                <div class="service-icon" style="font-size: 2rem;">🎮</div>
+                <h3 style="font-size: 1.2rem;">Game Studio</h3>
+                <p style="font-size: 0.9rem;">Our studio is dedicated to creating fun, engaging, and immersive games for players of all ages.</p>
+                </div>
+                <div class="service-card" style="padding: 1.5rem;">
+                <div class="service-icon" style="font-size: 2rem;">📢</div>
+                <h3 style="font-size: 1.2rem;">App Advertising</h3>
+                <p style="font-size: 0.9rem;">We help you promote your applications effectively through strategic App Store advertising to reach a wider audience.</p>
+                </div>
+            </div>
+            </div>
+        </section>
 
-    <!-- Contact-->
+        <section id="contact" class="content-section">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <div class="contact-container">
+                    <form class="contact-form" method="post" action="/contact-submit">
+                        <input type="text" name="name" placeholder="Full Name" required aria-label="Full Name" />
+                        <input type="email" name="email" placeholder="Email Address" required aria-label="Email Address" />
+                        <textarea name="message" placeholder="Leave us a few words..." rows="5" required aria-label="Message"></textarea>
+                        <button type="submit" class="cta-button">Submit Message</button>
+                    </form>
+                    <div class="contact-info">
+                        <h3>Reach Us</h3>
+                        <p><strong>Manimau Studios Pte Ltd.</strong></p>
+                        <p>1 Kaki Bukit Road 1, #02-44</p>
+                        <p>Singapore, 415934</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <section class="contact" id="contact">
-        <h1>Contact</h1>
-        <hr/>       
-      
-        <div class="content">
-          
-          <div class="form">
-		  
-		 <form action='https://forms.zohopublic.com/manimaustudios/form/ContactUs/formperma/GHGLSWF1-cIWFfsNbM3GKEavYWIbLw-O_ldP27zXkSQ/htmlRecords/submit' name='form' id='form' method='POST' accept-charset='UTF-8' enctype='multipart/form-data'>
-<input type="hidden" name="zf_referrer_name" value=""><!-- To Track referrals , place the referrer name within the " " in the above hidden input field -->
-<input type="hidden" name="zf_redirect_url" value=""><!-- To redirect to a specific page after record submission , place the respective url within the " " in the above hidden input field -->
-<input type="hidden" name="zc_gad" value=""><!-- If GCLID is enabled in Zoho CRM Integration, click details of AdWords Ads will be pushed to Zoho CRM -->
-<h2>Contact Us</h2>
-<p></p>
-<!--Name-->
-<label>Full name
-<em>*</em>
-</label>
-<input type="text" maxlength="255" name="Name_First" fieldType=7 /><label>First</label>
-<input type="text" maxlength="255" name="Name_Last" fieldType=7 /><label>Last</label>
-<!--Email-->
-<label>Email 
-<em>*</em>
-</label>
-<input type="text" maxlength="255" name="Email" value="" fieldType=9 />
-<!--Multi Line-->
-<label>Leave us a few words 
-<em>*</em>
-</label>
-<textarea name="MultiLine" maxlength="65535"></textarea>
-<button type="submit"><em>Submit</em></button></form>
-		  
-          
-     <!--       <form action="mailto:manimau@outlook.com?subject=Enquiry" method="post" enctype="text/plain">
-          
-            <input name="your-name" id="your-name" value="YOUR NAME" />
-            <input name="your-email" id="your-email" value="YOUR E-MAIL" />
-          
-            <textarea id="message" name="message" >MESSAGE</textarea>
- 
-            <a href="#">
-              <div class="button">
-                <span>SEND</span>
-              </div>
-            </a>  
- 
-            </form> -->
-          
-          </div>
-          
-          
-          <div class="contact-text">
-          
-          <strong>Reach us:</strong><br/><br/>
-        Manimau Studios Pte Ltd.<br/>
-        1 Kaki Bukit Road 1, 02-44<br/>
-		Singapore- 415934 <br/>
-	
+    <footer class="main-footer">
+        <p>&copy; 2025 Manimau Studios. All Rights Reserved.</p>
+    </footer>
 
-          
-          </div>
-        
-        
-        </div>
-      
-    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Ensure ThreeJS is loaded before running this script
+        if (typeof THREE === 'undefined') {
+            console.error('Three.js has not been loaded. Make sure to include it before this script.');
+        } else {
+            // Scene Setup
+            const scene = new THREE.Scene();
+            const container = document.getElementById('canvas-container');
 
+            // Camera
+            const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            camera.position.z = 25;
 
-    <section class="footer">
-    
-      <div class="margin">
-      
-        <div class="menu-footer">
-        
-        <!-- <a href="/">Home</a>
-        <a href="">Facebook</a> -->
-        
-        </div>
-        
-          <div class="copyright">© 2015. All Rights Reserved.</div>        
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
 
-      </div>
-    
-    
-    </section>    
-    
+            // Neural Network Objects
+            const network = new THREE.Group();
+            scene.add(network);
 
-</div>
+            const nodeGeometry = new THREE.SphereGeometry(0.15, 16, 8);
+            const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x00aaff });
+            const nodes = [];
+            const numNodes = 50;
 
+            for (let i = 0; i < numNodes; i++) {
+                const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+                const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(30));
+                node.position.set(x, y, z);
+                nodes.push(node);
+                network.add(node);
+            }
 
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.15
+            });
+            const linesGeometry = new THREE.BufferGeometry();
+            const linePositions = [];
+            
+            for (let i = 0; i < numNodes * 2; i++) {
+                const startNode = nodes[Math.floor(Math.random() * nodes.length)];
+                const endNode = nodes[Math.floor(Math.random() * nodes.length)];
+                linePositions.push(...startNode.position.toArray(), ...endNode.position.toArray());
+            }
 
-	<!-- Scripts -->
-	
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> <!-- jQuery -->
-	<script src="js/jquery.parallax.js"></script> <!-- jQuery Parallax -->
-	<script src="js/jquery.nicescroll.js"></script> <!-- jQuery NiceScroll -->
-	<script src="js/jquery.sticky.js"></script> <!-- jQuery Stick Menu -->
-	<script src="js/script.js"></script> <!-- All script -->
+            linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+            const lines = new THREE.LineSegments(linesGeometry, lineMaterial);
+            network.add(lines);
 
+            // Mouse Interactivity
+            let mouseX = 0;
+            let mouseY = 0;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Pop-up Animation on Keypress
+            const createPopupAnimation = (type) => {
+                const popupGeometry = new THREE.BoxGeometry(1, 1, 1);
+                const popupMaterial = new THREE.MeshBasicMaterial({ color: type === 'transaction' ? 0x00ff00 : type === 'advertising' ? 0xffa500 : 0xff0000 });
+                const popup = new THREE.Mesh(popupGeometry, popupMaterial);
+
+                popup.position.set(
+                    THREE.MathUtils.randFloatSpread(20),
+                    THREE.MathUtils.randFloatSpread(20),
+                    THREE.MathUtils.randFloatSpread(20)
+                );
+
+                scene.add(popup);
+
+                // Animate the popup
+                const popupAnimation = () => {
+                    if (popup.material.opacity <= 0) {
+                        scene.remove(popup);
+                    } else {
+                        popup.scale.x += 0.1;
+                        popup.scale.y += 0.1;
+                        popup.scale.z += 0.1;
+
+                        popup.material.opacity -= 0.02;
+                        requestAnimationFrame(popupAnimation);
+                    }
+                };
+
+                popup.material.transparent = true;
+                popup.material.opacity = 1;
+                popupAnimation();
+            };
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 't') {
+                    createPopupAnimation('transaction');
+                } else if (event.key === 'a') {
+                    createPopupAnimation('advertising');
+                } else if (event.key === 'm') {
+                    createPopupAnimation('media');
+                }
+            });
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                const elapsedTime = clock.getElapsedTime();
+
+                // Animate the network
+                network.rotation.y = elapsedTime * 0.1;
+                
+                // Mouse follow
+                network.rotation.x += (mouseY * 0.5 - network.rotation.x) * 0.05;
+                network.rotation.y += (mouseX * 0.5 - network.rotation.y) * 0.05;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // Responsive Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            });
+        }
+    </script>
 </body>
-
 </html>
