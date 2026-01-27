@@ -1,70 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Meter - AI Viral Predictor</title>
+    <title>Vibe Meter - Stop Guessing. Start Going Viral.</title>
     <style>
-        :root {
-            --primary: #FF2E5B; /* The App's Pink/Red */
-            --accent: #9b51e0; /* Purple from screenshots */
-            --bg: #050505;
-            --surface: #121212;
-            --text: #ffffff;
-            --text-muted: #a1a1aa;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+        }
+
+        :root {
+            --bg: #050505;
+            --surface: #121212;
+            --surface-light: #1a1a1a;
+            --primary: #FF2E5B;
+            --primary-hover: #ff4768;
+            --text: #ffffff;
+            --text-secondary: #a0a0a0;
+            --glass: rgba(18, 18, 18, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            overflow-x: hidden;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* --- UTILITIES & ANIMATIONS --- */
-        .gradient-text {
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--surface-light);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
 
-        .glow-bg {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 46, 91, 0.15) 0%, rgba(0,0,0,0) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
+        /* Animations */
         @keyframes float {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
         }
 
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 46, 91, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(255, 46, 91, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 46, 91, 0); }
+        @keyframes pulse-glow {
+            0%, 100% { 
+                opacity: 0.4; 
+                transform: scale(1); 
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.1); 
+            }
         }
 
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Utility Classes */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
         .fade-in.visible {
@@ -72,420 +85,715 @@
             transform: translateY(0);
         }
 
-        /* --- HEADER --- */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Header */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            background: rgba(5, 5, 5, 0.5);
-            border-bottom: 1px solid var(--border);
         }
 
         .logo {
-            font-weight: 800;
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span { color: var(--primary); }
-
-        .btn-download {
-            background: var(--text);
-            color: var(--bg);
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
             text-decoration: none;
-            transition: transform 0.2s;
+            color: var(--text);
         }
 
-        .btn-download:hover { transform: scale(1.05); }
+        .logo span {
+            color: var(--primary);
+        }
 
-        /* --- HERO SECTION --- */
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 46, 91, 0.3);
+        }
+
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 120px 20px 60px;
+            padding: 8rem 2rem 4rem;
             position: relative;
-            flex-wrap: wrap;
-            gap: 60px;
+            overflow: hidden;
         }
 
-        .hero-content {
-            flex: 1;
-            max-width: 600px;
-            z-index: 2;
+        .hero-bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 46, 91, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            animation: pulse-glow 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        h1 {
-            font-size: clamp(40px, 8vw, 72px);
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
             font-weight: 800;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
             letter-spacing: -2px;
         }
 
-        .hero p {
-            font-size: 18px;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            max-width: 480px;
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            line-height: 1.6;
         }
 
-        .app-store-badge {
-            display: inline-block;
-            background: #fff;
-            color: #000;
-            padding: 12px 28px;
-            border-radius: 12px;
+        .download-btn {
+            background: white;
+            color: black;
+            padding: 1rem 2rem;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
-            display: flex;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            width: fit-content;
-            transition: 0.3s;
+            gap: 0.75rem;
+            border: 2px solid transparent;
         }
-        
-        .app-store-badge:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        /* --- CSS PHONE MOCKUP --- */
-        .phone-container {
-            flex: 1;
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .download-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* iPhone Mockup */
+        .iphone-container {
             display: flex;
             justify-content: center;
-            min-width: 300px;
+            align-items: center;
             animation: float 6s ease-in-out infinite;
         }
 
-        .phone {
+        .iphone {
             width: 300px;
             height: 600px;
             background: #000;
-            border-radius: 40px;
-            border: 8px solid #333;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 2px #333,
+                0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                0 0 100px rgba(255, 46, 91, 0.1);
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(255, 46, 91, 0.2);
         }
 
-        .notch {
+        .iphone-notch {
             position: absolute;
-            top: 0;
+            top: 12px;
             left: 50%;
             transform: translateX(-50%);
             width: 120px;
             height: 30px;
-            background: #333;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
+            background: #000;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
             z-index: 10;
         }
 
-        .screen {
-            height: 100%;
+        .iphone-screen {
             width: 100%;
-            background: radial-gradient(circle at top right, #1a1a1a, #000);
-            padding: 50px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .score-circle {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 8px solid #333;
-            border-top: 8px solid var(--primary);
-            border-right: 8px solid var(--primary);
+            height: 100%;
+            background: var(--surface);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(255, 46, 91, 0.2);
-            position: relative;
+            padding: 2rem;
         }
 
-        .score-val { font-size: 48px; font-weight: 800; color: var(--primary); }
-        .score-max { font-size: 16px; color: #666; }
-        .stat-badge {
-            background: rgba(255,46,91,0.2);
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 20px;
+        .screen-content {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .score-circle svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 8;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 565.48;
+            stroke-dashoffset: 141.37; /* 75% of 565.48 */
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .score-text span {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
             font-weight: 600;
         }
 
-        .graph-line {
-            width: 100%;
-            height: 2px;
-            background: #333;
-            margin-top: 40px;
-            position: relative;
-        }
-        .graph-line::after {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; height: 100%; width: 70%;
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
+        .mini-graph {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            height: 60px;
+            justify-content: center;
         }
 
-        /* --- FEATURES GRID --- */
+        .bar {
+            width: 8px;
+            background: linear-gradient(to top, var(--primary), transparent);
+            border-radius: 4px;
+            opacity: 0.8;
+        }
+
+        .bar:nth-child(1) { height: 30%; }
+        .bar:nth-child(2) { height: 60%; }
+        .bar:nth-child(3) { height: 45%; }
+        .bar:nth-child(4) { height: 80%; }
+        .bar:nth-child(5) { height: 55%; }
+
+        /* Features Section */
         .features {
-            padding: 100px 20px;
+            padding: 8rem 2rem;
+            background: var(--surface);
+        }
+
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            font-size: 36px;
-            margin-bottom: 60px;
+            margin-bottom: 4rem;
         }
 
-        .grid {
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
         }
 
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 40px;
+        .feature-card {
+            background: var(--surface-light);
+            border: 1px solid transparent;
             border-radius: 24px;
-            transition: 0.3s;
+            padding: 3rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 46, 91, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
             border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(255, 46, 91, 0.1);
         }
 
-        .card h3 { font-size: 24px; margin-bottom: 15px; }
-        .card p { color: var(--text-muted); }
-        .icon { font-size: 40px; margin-bottom: 20px; }
+        .feature-card:hover::before {
+            opacity: 1;
+        }
 
-        /* --- INTERACTIVE DEMO --- */
-        .interactive-demo {
-            padding: 100px 20px;
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 46, 91, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 8rem 2rem;
             text-align: center;
-            background: linear-gradient(180deg, var(--bg) 0%, #1a050a 100%);
+            position: relative;
         }
 
-        .demo-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 20px 60px;
-            font-size: 20px;
-            font-weight: bold;
+        .demo-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .demo h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            letter-spacing: -1px;
+        }
+
+        .analyze-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 700;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 30px;
-            animation: pulse-ring 2s infinite;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .demo-btn:hover { background: #e01b45; }
+        .analyze-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .analyze-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .analyze-btn.analyzing::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
 
         .demo-result {
-            margin-top: 40px;
-            font-size: 60px;
-            font-weight: 900;
             opacity: 0;
-            transition: 0.5s;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            background: var(--surface-light);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 46, 91, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 46, 91, 0.1);
         }
 
-        .visible-score { opacity: 1; }
+        .demo-result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        /* --- FOOTER --- */
+        .demo-result .score {
+            color: var(--primary);
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
         footer {
-            padding: 60px 20px;
+            background: var(--surface);
             border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
         }
 
-        .footer-links {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .footer-links a { color: var(--text-muted); text-decoration: none; }
-        .footer-links a:hover { color: var(--primary); }
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
 
         .disclaimer {
-            max-width: 600px;
-            margin: 30px auto 0;
-            font-size: 12px;
-            opacity: 0.6;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
         }
 
         /* Responsive */
-        @media(max-width: 768px) {
-            h1 { font-size: 48px; }
-            .hero { flex-direction: column; text-align: center; }
-            .hero-content { align-items: center; display: flex; flex-direction: column; }
+        @media (max-width: 968px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .iphone-container {
+                order: -1;
+            }
+
+            .iphone {
+                width: 250px;
+                height: 500px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2,
+            .demo h2 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .feature-card {
+                padding: 2rem;
+            }
+
+            nav {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="glow-bg"></div>
-
+    <!-- Header -->
     <header>
-        <div class="logo">⚡️ Vibe<span>Meter</span></div>
-        <a href="https://apps.apple.com/app/id6756905871" class="btn-download">Get App</a>
+        <nav>
+            <a href="#" class="logo">⚡️ Vibe<span>Meter</span></a>
+            <a href="https://apps.apple.com/app/id6756905871" class="cta-button">Get App</a>
+        </nav>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content fade-in">
-            <h1>Stop Guessing.<br><span class="gradient-text">Start Going Viral.</span></h1>
-            <p>Analyze your TikToks and Reels before you post. Get AI-powered Virality Scores, Hook Retention graphs, and reward estimates.</p>
+        <div class="hero-bg-glow"></div>
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <h1>Stop Guessing. <span class="gradient-text">Start Going Viral.</span></h1>
+                <p>The AI-powered crystal ball for TikTok and Reels creators. Predict your video's performance before you post, optimize your hooks, and maximize your Creator Fund earnings.</p>
+                <a href="https://apps.apple.com/app/id6756905871" class="download-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                    </svg>
+                    Download on iOS
+                </a>
+            </div>
             
-            <a href="https://apps.apple.com/app/id6756905871" class="app-store-badge">
-                <svg viewBox="0 0 384 512" width="20" fill="black"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 46.9 126.7 98 126.7 32.3 0 52.8-25.8 79.5-25.8 27.6 0 45.9 25.9 78.8 26 26.4 .1 54.1-39.1 76.1-80 18.8-35 27.6-69.7 27.6-71 0-.1-51.8-20.7-49.7-81.9zM245.2 75.6c18.7-22.9 33.2-53 28.6-84.8-23.7 1.8-54.1 17.7-71 37.8-17.1 20.4-33.3 50.4-28.1 82.2 28.5 2.1 53.7-14.7 70.5-35.2z"/></svg>
-                Download on iOS
-            </a>
-        </div>
-
-        <div class="phone-container">
-            <div class="phone">
-                <div class="notch"></div>
-                <div class="screen">
-                    <h3 style="margin-bottom: 30px; color: #fff;">Analysis Ready</h3>
-                    <div class="score-circle">
-                        <span class="score-val" id="hero-score">0</span>
-                        <span class="score-max">/100</span>
-                    </div>
-                    <div class="stat-badge">High Potential</div>
-                    <div style="width:100%; margin-top:30px; text-align:left;">
-                        <small style="color:#666;">Hook Retention</small>
-                        <div class="graph-line"></div>
-                    </div>
-                    <div style="width:100%; margin-top:20px; text-align:left;">
-                        <small style="color:#666;">Est. Views</small>
-                        <h4 style="font-size: 20px;">50k - 150k</h4>
+            <div class="iphone-container fade-in">
+                <div class="iphone">
+                    <div class="iphone-notch"></div>
+                    <div class="iphone-screen">
+                        <div class="screen-content">
+                            <div class="score-circle">
+                                <svg viewBox="0 0 200 200">
+                                    <circle class="circle-bg" cx="100" cy="100" r="90"/>
+                                    <circle class="circle-progress" cx="100" cy="100" r="90"/>
+                                </svg>
+                                <div class="score-text">75<span>/100</span></div>
+                            </div>
+                            <div class="mini-graph">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                            <p style="margin-top: 1.5rem; color: var(--text-secondary); font-size: 0.9rem;">Virality Score</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Features Section -->
     <section class="features">
-        <h2 class="section-title fade-in">Crush the Algorithm</h2>
-        <div class="grid">
-            <!-- Feature 1 -->
-            <div class="card fade-in">
-                <div class="icon">🚀</div>
-                <h3>Virality Score</h3>
-                <p>Get a concrete score out of 100 based on current trends, pacing, and visual chaos. Know if it's a flop or a banger instantly.</p>
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Features that <span class="gradient-text">stack the odds</span> in your favor</h2>
+                <p>Everything you need to predict, analyze, and optimize your content</p>
             </div>
-            <!-- Feature 2 -->
-            <div class="card fade-in">
-                <div class="icon">🪝</div>
-                <h3>Hook Analysis</h3>
-                <p>The first 3 seconds are everything. Our visual graph shows exactly where your audience drops off so you can tighten your edit.</p>
-            </div>
-            <!-- Feature 3 -->
-            <div class="card fade-in">
-                <div class="icon">💰</div>
-                <h3>Reward Estimator</h3>
-                <p>Don't just chase views, chase value. See estimated Creator Fund rewards based on predicted view counts.</p>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Virality Score</h3>
+                    <p>Our AI predicts whether your video will flop or become a banger with 94% accuracy. Get instant feedback before you waste time on content that won't perform.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Hook Analysis</h3>
+                    <p>Graph your audience retention for the first 3 critical seconds. Identify exactly where viewers drop off and optimize your opening hook to stop the scroll.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h3>Reward Estimator</h3>
+                    <p>Calculate your potential Creator Fund earnings before posting. Know exactly how much revenue your content could generate based on current CPM rates.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔥</div>
+                    <h3>Trend Matching</h3>
+                    <p>Get personalized recommendations for trending audio, hashtags, and content formats that match your niche and maximize your reach potential.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div>&copy; 2026 Manimau Studios Pte Ltd. All rights reserved.</div>
-        <div class="footer-links">
-            <a href="terms.html">Terms of Service</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="mailto:manimaustudios@gmail.com">Contact</a>
+    <!-- Demo Section -->
+    <section class="demo">
+        <div class="demo-container fade-in">
+            <h2>Test the <span class="gradient-text">Vibe</span></h2>
+            <button class="analyze-btn" id="analyzeBtn" onclick="analyzeVideo()">Analyze Video</button>
+            <div class="demo-result" id="demoResult">
+                <span class="score">88/100</span>
+                <div>Viral Potential: HIGH 🔥</div>
+            </div>
         </div>
-        <div class="disclaimer">
-            Disclaimer: Vibe Meter is an entertainment tool and is not affiliated with TikTok, Instagram, or YouTube. Scores are estimates only.
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">⚡️ Vibe<span style="color: var(--primary);">Meter</span></div>
+            <p class="disclaimer">
+                Vibe Meter is for entertainment purposes only. Predictions are generated by AI algorithms and do not guarantee actual performance or viral success. 
+                Vibe Meter is not affiliated with, endorsed by, or connected to TikTok, Instagram, YouTube, or their parent companies. 
+                All trademarks and copyrights belong to their respective owners. Creator Fund estimates are projections only and not financial advice.
+            </p>
+            <p class="copyright">&copy; 2026 Vibe Meter. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // --- 1. Intersection Observer for Scroll Animations ---
+        // Intersection Observer for fade-in animations
         const observerOptions = {
-            threshold: 0.1
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
                 }
             });
         }, observerOptions);
 
+        // Observe all fade-in elements
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
 
-        // --- 2. Hero Score Animation (Auto runs) ---
-        function animateScore(elementId, target, duration) {
-            let start = 0;
-            const element = document.getElementById(elementId);
-            const increment = target / (duration / 16); // 60fps
+        // Demo functionality
+        function analyzeVideo() {
+            const btn = document.getElementById('analyzeBtn');
+            const result = document.getElementById('demoResult');
             
-            const timer = setInterval(() => {
-                start += increment;
-                if (start >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(start);
-                }
-            }, 16);
-        }
-
-        // Run hero animation after a slight delay
-        setTimeout(() => {
-            animateScore("hero-score", 75, 2000);
-        }, 1000);
-
-        // --- 3. Interactive Demo Button ---
-        function runDemo() {
-            const resultDiv = document.getElementById('demo-text');
-            const btn = document.querySelector('.demo-btn');
+            // Reset state
+            result.classList.remove('show');
             
-            btn.textContent = "Analyzing...";
-            btn.style.opacity = "0.7";
-            resultDiv.style.opacity = "0";
-
+            // Update button state
+            btn.textContent = 'Analyzing...';
+            btn.disabled = true;
+            btn.classList.add('analyzing');
+            
+            // Simulate analysis delay
             setTimeout(() => {
-                resultDiv.innerHTML = '<span class="gradient-text">88/100</span><br><span style="font-size:20px; color:#fff">Viral Potential: HIGH</span>';
-                resultDiv.classList.add('visible-score');
-                btn.textContent = "Analyze Again";
-                btn.style.opacity = "1";
+                btn.textContent = 'Analyze Video';
+                btn.disabled = false;
+                btn.classList.remove('analyzing');
+                result.classList.add('show');
             }, 1500);
         }
-    </script>
 
+        // Header scroll effect
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.style.background = 'rgba(5, 5, 5, 0.95)';
+                header.style.backdropFilter = 'blur(20px)';
+            } else {
+                header.style.background = 'rgba(18, 18, 18, 0.8)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
