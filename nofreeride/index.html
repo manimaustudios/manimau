@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Free Ride - Love is Free. Gas Isn't.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f172a',
+                            green: '#10b981',
+                            yellow: '#fbbf24',
+                            red: '#f43f5e',
+                            accent: '#3b82f6'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .text-gradient-green {
+            background: linear-gradient(to right, #34d399, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive Slider */
+        .slide-container {
+            position: relative;
+            width: 100%;
+            height: 60px;
+            background: #f43f5e;
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slide-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 60px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 2px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .slide-handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 52px;
+            height: 52px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f43f5e;
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Receipt Paper Effect */
+        .receipt-paper {
+            background: white;
+            color: #000;
+            position: relative;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+        }
+        .receipt-paper::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%),
+                        linear-gradient(-45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%);
+            background-size: 20px 40px;
+            background-position: 0 -20px; 
+        }
+
+        /* Spotlight Effect */
+        .spotlight {
+            background: radial-gradient(600px circle at var(--x) var(--y), rgba(29, 78, 216, 0.15), transparent 40%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* QR Code Container */
+        #qrcode img {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-green selection:text-white">
+
+    <!-- Spotlight Overlay -->
+    <div class="spotlight" id="spotlight"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-brand-green rounded-xl flex items-center justify-center text-black font-bold text-xl">
+                        <i class="fa-solid fa-car-side"></i>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-tight">No Free Ride</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Features</a>
+                    <a href="#calculator" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Try Simulator</a>
+                    <a href="https://apps.apple.com/app/id6759541565" target="_blank" class="px-5 py-2.5 bg-white text-black rounded-full font-bold text-sm hover:bg-gray-200 transition-colors">Download App</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full z-0 pointer-events-none">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-brand-green/20 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-brand-yellow/10 rounded-full blur-[120px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <!-- Text Content -->
+                <div class="space-y-8 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-brand-green">
+                        <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+                        v2.0 Now Available
+                    </div>
+                    
+                    <h1 class="font-display text-5xl lg:text-7xl font-bold leading-[1.1]">
+                        Love is Free. <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-green to-emerald-300">Gas Isn't.</span>
+                    </h1>
+                    
+                    <p class="text-lg text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        The ultimate prank app for car owners. Track your trips, calculate "Savage Fees," and generate professional receipts to bill your friends, partner, or family for the ride.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                        <button onclick="document.getElementById('calculator').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto px-8 py-4 bg-brand-green hover:bg-emerald-500 text-black font-bold rounded-full transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Try Live Simulator
+                        </button>
+                        <a href="https://apps.apple.com/app/id6759541565" target="_blank" class="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white font-bold rounded-full transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-apple"></i> App Store
+                        </a>
+                    </div>
+
+                    <div class="pt-4 flex items-center justify-center lg:justify-start gap-6 text-sm text-gray-500">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-brand-green"></i> GPS Tracking
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-brand-green"></i> Split Bill
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-brand-green"></i> Receipt Export
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Phone Mockup -->
+                <div class="relative mx-auto lg:ml-auto w-full max-w-[380px] animate-float">
+                    <!-- Phone Frame -->
+                    <div class="relative bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden aspect-[9/19]">
+                        <!-- Dynamic Island -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-black rounded-b-2xl z-20"></div>
+                        
+                        <!-- Screen Content -->
+                        <div class="h-full w-full bg-[#0B1120] flex flex-col p-6 pt-12 relative overflow-hidden">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center mb-6">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-8 h-8 bg-brand-green/20 rounded-lg flex items-center justify-center text-brand-green">
+                                        <i class="fa-solid fa-taxi"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-bold text-white">No Free Ride</div>
+                                        <div class="text-[10px] text-gray-400">GPS: ACTIVE</div>
+                                    </div>
+                                </div>
+                                <div class="text-[10px] text-gray-400 text-right">NYC, USA</div>
+                            </div>
+
+                            <!-- Main Card -->
+                            <div class="glass-card rounded-2xl p-5 mb-4 border-t border-white/10">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-xs text-gray-400">Current Fare</span>
+                                    <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                                </div>
+                                <div class="text-5xl font-display font-bold text-brand-green mb-4 tracking-tight" id="hero-fare">US$0.00</div>
+                                
+                                <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                    <span id="hero-dist">0.00 mi</span>
+                                    <span id="hero-time">00:00</span>
+                                </div>
+                                <div class="flex justify-between text-xs font-medium text-white">
+                                    <span>Savage Fees</span>
+                                    <span>US$5.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Savings Card -->
+                            <div class="glass-card rounded-2xl p-4 mb-6 border-l-4 border-brand-yellow">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-[10px] text-gray-400 uppercase">Savings vs Taxi</div>
+                                        <div class="text-xs text-gray-500">Est. Drive Cost: <span id="hero-cost">US$0.00</span></div>
+                                    </div>
+                                    <div class="text-xl font-bold text-brand-yellow" id="hero-savings">US$0.00</div>
+                                </div>
+                            </div>
+
+                            <!-- Passengers -->
+                            <div class="space-y-3 mb-auto">
+                                <div class="flex justify-between items-center text-xs text-gray-400 mb-2">
+                                    <span>Passengers</span>
+                                    <span class="bg-white/10 px-2 py-0.5 rounded text-white">3</span>
+                                </div>
+                                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-lg">👊</span>
+                                        <div class="text-xs">
+                                            <div class="font-bold text-white">Sofia</div>
+                                            <div class="text-gray-500 scale-90 origin-left">Just Friends</div>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <div class="glass-card p-3 rounded-xl flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-lg">❤️</span>
+                                        <div class="text-xs">
+                                            <div class="font-bold text-white">Maria</div>
+                                            <div class="text-gray-500 scale-90 origin-left">Significant Other</div>
+                                        </div>
+                                    </div>
+                                    <button class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Slide Button -->
+                            <div class="mt-4">
+                                <div class="slide-container" id="hero-slider">
+                                    <div class="slide-text">SLIDE TO END</div>
+                                    <div class="slide-handle">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Elements behind phone -->
+                    <div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-brand-green/20 to-blue-500/20 rounded-full blur-3xl"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-24 bg-black relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="font-display text-3xl md:text-5xl font-bold mb-6">The Ultimate <span class="text-brand-green">Ride-Hailing</span> Prank</h2>
+                <p class="text-gray-400 text-lg">Turn every car ride into a premium taxi experience. Track, calculate, and invoice with military precision.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-colors group">
+                    <div class="w-14 h-14 bg-brand-green/10 rounded-2xl flex items-center justify-center text-brand-green text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">GPS Meter</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Real-time tracking of distance and time. Calculates fare based on actual city taxi rates or your custom "Gas Cost" algorithm.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-colors group">
+                    <div class="w-14 h-14 bg-brand-yellow/10 rounded-2xl flex items-center justify-center text-brand-yellow text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Smart Receipts</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Generate beautiful, professional PDF receipts. Includes split fare breakdowns, "Savage Fees," and a QR code for app download.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-3xl hover:bg-white/5 transition-colors group">
+                    <div class="w-14 h-14 bg-brand-red/10 rounded-2xl flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Passenger Logic</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Assign relationship tags (Just Friends, Significant Other) and automatically split the bill. No more "I'll Venmo you later."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Simulator Section -->
+    <section id="calculator" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-900 to-black"></div>
+        
+        <div class="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="text-brand-green font-bold tracking-wider text-sm uppercase">Interactive Demo</span>
+                <h2 class="font-display text-4xl font-bold mt-2 mb-4">Try the Meter</h2>
+                <p class="text-gray-400">Simulate a ride and see how much you could be charging.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 items-start">
+                
+                <!-- Controls -->
+                <div class="glass-card p-8 rounded-3xl space-y-8">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Billing Mode</label>
+                        <div class="grid grid-cols-2 gap-2 p-1 bg-black/50 rounded-xl">
+                            <button id="mode-taxi" class="py-2 rounded-lg bg-brand-green text-black font-bold text-sm transition-all" onclick="setMode('taxi')">Taxi Fare</button>
+                            <button id="mode-gas" class="py-2 rounded-lg text-gray-400 hover:text-white font-bold text-sm transition-all" onclick="setMode('gas')">Gas Cost</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-400">Trip Distance</span>
+                            <span class="font-display font-bold text-xl" id="sim-dist-val">0.0 mi</span>
+                        </div>
+                        <input type="range" min="0" max="50" step="0.1" value="0" id="dist-slider" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-brand-green">
+                        
+                        <div class="flex justify-between items-center mt-4">
+                            <span class="text-gray-400">Passengers</span>
+                            <div class="flex items-center gap-4">
+                                <button onclick="updatePax(-1)" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-minus"></i></button>
+                                <span class="font-display font-bold text-xl w-4 text-center" id="sim-pax-val">1</span>
+                                <button onclick="updatePax(1)" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 mb-1">Total Bill</span>
+                            <span class="font-display text-4xl font-bold text-brand-green" id="sim-total">US$0.00</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2 text-sm">
+                            <span class="text-gray-500">Per Person</span>
+                            <span class="text-white font-bold" id="sim-split">US$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Receipt Preview -->
+                <div class="relative">
+                    <div class="receipt-paper p-8 rounded-sm max-w-sm mx-auto transform rotate-1 transition-transform hover:rotate-0 duration-500">
+                        <div class="text-center border-b-2 border-dashed border-gray-300 pb-4 mb-4">
+                            <h3 class="font-bold text-xl uppercase tracking-widest">No Free Ride</h3>
+                            <p class="text-xs text-gray-500">Love Is Free. Gas Isn't</p>
+                        </div>
+                        
+                        <div class="flex justify-between text-xs mb-4">
+                            <div>
+                                <p class="font-bold uppercase text-gray-400">Driver</p>
+                                <p>Lucas</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold uppercase text-gray-400">Date</p>
+                                <p id="receipt-date">24 Feb 2026</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-sm border-b border-dashed border-gray-300 pb-4 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Base Fare</span>
+                                <span class="font-mono" id="receipt-base">US$3.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Distance (<span id="receipt-dist">0.0</span> mi)</span>
+                                <span class="font-mono" id="receipt-dist-cost">US$0.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Savage Fees</span>
+                                <span class="font-mono">US$5.00</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="font-bold text-lg">TOTAL</span>
+                            <span class="font-bold text-2xl font-mono" id="receipt-total">US$8.00</span>
+                        </div>
+
+                        <div class="bg-gray-100 p-3 rounded text-xs mb-4">
+                            <p class="font-bold text-gray-500 uppercase mb-1">Split Fare</p>
+                            <div class="flex justify-between">
+                                <span>Lucas (Driver)</span>
+                                <span class="font-mono" id="receipt-split-1">US$2.66</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Maria</span>
+                                <span class="font-mono" id="receipt-split-2">US$2.67</span>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div id="qrcode" class="w-24 h-24 mx-auto mb-2"></div>
+                            <p class="text-[10px] text-gray-400">Scan to download app</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative">
+        <div class="absolute inset-0 bg-brand-green/5"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="font-display text-4xl md:text-6xl font-bold mb-8">Stop Giving <br>Free Rides.</h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join thousands of drivers who are finally getting compensated for their time, gas, and emotional labor.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://apps.apple.com/app/id6759541565" target="_blank" class="px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-apple text-xl"></i> Download for iOS
+                </a>
+          
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center text-brand-green">
+                    <i class="fa-solid fa-car-side"></i>
+                </div>
+                <span class="font-bold text-lg">No Free Ride</span>
+            </div>
+            <div class="text-gray-500 text-sm">
+                &copy; 2026 No Free Ride Inc. All rights reserved.
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa-brands fa-tiktok text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- QR Code Generation ---
+        const qrCode = new QRCode(document.getElementById("qrcode"), {
+            text: "https://apps.apple.com/app/id6759541565",
+            width: 96,
+            height: 96,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.M
+        });
+
+        // --- Spotlight Effect ---
+        const spotlight = document.getElementById('spotlight');
+        document.addEventListener('mousemove', (e) => {
+            spotlight.style.setProperty('--x', `${e.clientX}px`);
+            spotlight.style.setProperty('--y', `${e.clientY}px`);
+        });
+
+        // --- Hero Animation Logic ---
+        let heroFare = 0;
+        let heroInterval;
+        const heroFareEl = document.getElementById('hero-fare');
+        const heroDistEl = document.getElementById('hero-dist');
+        const heroTimeEl = document.getElementById('hero-time');
+        
+        function startHeroMeter() {
+            let dist = 0.0;
+            let time = 0;
+            heroInterval = setInterval(() => {
+                dist += 0.01;
+                time++;
+                heroFare += 0.05; // Increment fare
+                
+                heroFareEl.innerText = `US$${heroFare.toFixed(2)}`;
+                heroDistEl.innerText = `${dist.toFixed(2)} mi`;
+                
+                const mins = Math.floor(time / 60).toString().padStart(2, '0');
+                const secs = (time % 60).toString().padStart(2, '0');
+                heroTimeEl.innerText = `${mins}:${secs}`;
+
+                // Update savings
+                const savings = Math.max(0, (heroFare * 1.5) - heroFare).toFixed(2);
+                document.getElementById('hero-savings').innerText = `US$${savings}`;
+                document.getElementById('hero-cost').innerText = `US$${heroFare.toFixed(2)}`;
+
+            }, 1000);
+        }
+
+        // Start hero animation on load
+        startHeroMeter();
+
+        // --- Simulator Logic ---
+        const state = {
+            mode: 'taxi', // 'taxi' or 'gas'
+            distance: 5.0,
+            passengers: 2,
+            baseFare: 3.00,
+            ratePerMile: 2.50, // Taxi rate
+            gasRate: 0.20,     // Gas rate per mile (simplified)
+            savageFee: 5.00
+        };
+
+        const els = {
+            distSlider: document.getElementById('dist-slider'),
+            distVal: document.getElementById('sim-dist-val'),
+            paxVal: document.getElementById('sim-pax-val'),
+            total: document.getElementById('sim-total'),
+            split: document.getElementById('sim-split'),
+            receiptDist: document.getElementById('receipt-dist'),
+            receiptDistCost: document.getElementById('receipt-dist-cost'),
+            receiptTotal: document.getElementById('receipt-total'),
+            receiptSplit1: document.getElementById('receipt-split-1'),
+            receiptSplit2: document.getElementById('receipt-split-2'),
+            modeTaxi: document.getElementById('mode-taxi'),
+            modeGas: document.getElementById('mode-gas')
+        };
+
+        function calculate() {
+            let subtotal = state.baseFare + state.savageFee;
+            let distCost = 0;
+
+            if (state.mode === 'taxi') {
+                distCost = state.distance * state.ratePerMile;
+            } else {
+                distCost = state.distance * state.gasRate;
+            }
+            
+            subtotal += distCost;
+            
+            // Update UI
+            els.distVal.innerText = `${parseFloat(state.distance).toFixed(1)} mi`;
+            els.total.innerText = `US$${subtotal.toFixed(2)}`;
+            
+            const perPerson = subtotal / state.passengers;
+            els.split.innerText = `US$${perPerson.toFixed(2)}`;
+            els.paxVal.innerText = state.passengers;
+
+            // Update Receipt
+            els.receiptDist.innerText = state.distance.toFixed(1);
+            els.receiptDistCost.innerText = `US$${distCost.toFixed(2)}`;
+            els.receiptTotal.innerText = `US$${subtotal.toFixed(2)}`;
+            
+            // Update split list logic
+            els.receiptSplit1.innerText = `US$${perPerson.toFixed(2)}`;
+            els.receiptSplit2.innerText = `US$${perPerson.toFixed(2)}`;
+        }
+
+        function setMode(mode) {
+            state.mode = mode;
+            if(mode === 'taxi') {
+                els.modeTaxi.className = "py-2 rounded-lg bg-brand-green text-black font-bold text-sm transition-all";
+                els.modeGas.className = "py-2 rounded-lg text-gray-400 hover:text-white font-bold text-sm transition-all";
+                els.total.classList.remove('text-brand-green');
+                els.total.classList.add('text-brand-yellow');
+            } else {
+                els.modeGas.className = "py-2 rounded-lg bg-brand-green text-black font-bold text-sm transition-all";
+                els.modeTaxi.className = "py-2 rounded-lg text-gray-400 hover:text-white font-bold text-sm transition-all";
+                els.total.classList.remove('text-brand-yellow');
+                els.total.classList.add('text-brand-green');
+            }
+            calculate();
+        }
+
+        function updatePax(change) {
+            let newPax = state.passengers + change;
+            if(newPax < 1) newPax = 1;
+            if(newPax > 8) newPax = 8;
+            state.passengers = newPax;
+            calculate();
+        }
+
+        els.distSlider.addEventListener('input', (e) => {
+            state.distance = parseFloat(e.target.value);
+            calculate();
+        });
+
+        // Initialize
+        setMode('taxi');
+        state.distance = 5.0; // Default start
+        els.distSlider.value = 5.0;
+        calculate();
+
+        // Set Date
+        const now = new Date();
+        document.getElementById('receipt-date').innerText = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+        // --- Slider Animation Logic (Visual only for landing page) ---
+        const slider = document.getElementById('hero-slider');
+        const handle = slider.querySelector('.slide-handle');
+        let isDragging = false;
+        let startX, currentX;
+        const maxDrag = slider.offsetWidth - 60;
+
+        // Simple auto-demo for the slider if user doesn't interact
+        setTimeout(() => {
+            if(!isDragging) {
+                handle.style.transition = "left 1s ease";
+                handle.style.left = '50%';
+                setTimeout(() => {
+                    handle.style.left = '4px';
+                }, 1000);
+            }
+        }, 3000);
+
+    </script>
+</body>
+</html>
