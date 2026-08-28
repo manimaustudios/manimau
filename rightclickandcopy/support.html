@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Support for the Right Click and Copy Chrome extension.">
+  <title>Support — Right Click and Copy</title>
+  <style>
+    body{margin:0;font:17px/1.68 system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#fff}main{max-width:800px;margin:0 auto;padding:56px 24px 80px}h1{font-size:42px}h2{margin-top:34px}a{color:#4f46e5}.button{display:inline-block;padding:11px 16px;border-radius:10px;color:#fff;background:#4f46e5;text-decoration:none}.note{color:#64748b}
+  </style>
+</head>
+<body><main>
+  <h1>Right Click and Copy Support</h1>
+  <h2>How do I use the extension?</h2><p>Open a regular website, click the extension’s toolbar icon, and turn <strong>Enable on this site</strong> on. Changes apply immediately.</p>
+  <h2>What is Strong Mode?</h2><p>Strong Mode is an optional per-site setting for pages that repeatedly clear a fresh text selection. It also unblocks drag actions. Use it only when standard mode is not enough.</p>
+  <h2>Why does the popup say “Unavailable”?</h2><p>Chrome prevents extensions from running on protected pages such as <code>chrome://</code> URLs, the Chrome Web Store, and some built-in browser views.</p>
+  <h2>How do I clear saved preferences?</h2><p>Change the relevant site setting, clear the extension’s stored data in Chrome, or uninstall the extension.</p>
+  <h2>Report a problem</h2><p>Open an issue in the GitHub repository that hosts this page. Include your Chrome version, the affected website, and reproducible steps. Do not include passwords, private page content, or other sensitive information.</p>
+  <p><a class="button" id="issues-link" href="#">Open a GitHub support issue</a></p>
+  <p class="note" id="issues-note">If the link is unavailable, visit the repository containing this GitHub Pages site and open its Issues tab.</p>
+  <p><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a></p>
+  <script>
+    (() => {
+      const host = location.hostname;
+      if (!host.endsWith('.github.io')) return;
+      const owner = host.slice(0, -'.github.io'.length);
+      const firstPath = location.pathname.split('/').filter(Boolean)[0];
+      const repository = firstPath || `${owner}.github.io`;
+      const url = `https://github.com/${owner}/${repository}/issues/new`;
+      document.getElementById('issues-link').href = url;
+      document.getElementById('issues-note').textContent = `Support repository: ${owner}/${repository}`;
+    })();
+  </script>
+</main></body>
+</html>
