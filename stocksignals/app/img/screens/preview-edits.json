@@ -1,0 +1,22 @@
+{
+  "tool": "Built-in image_gen",
+  "date": "2026-10-16",
+  "purpose": "Illustrative marketing previews; sample tickers are not actual unlocked signals.",
+  "records": [
+    {
+      "name": "stocks",
+      "prompt": "Use case: text-localization / precise-object-edit. Edit target: attached Stock Signals screenshot. Create a faithful edited marketing UI preview, preserving the EXACT original 726x1572 canvas, entire iPhone body at the exact original coordinates, simulator toolbar, navy colors, typography, bottom navigation and screen geometry. Change the six green 'Unlock' labels in the signal table to sample ticker symbols, in order: SOFI, MSFT, OXY, F, AMZN, AAPL. These are illustrative placeholders, NOT actual recommendations. Preserve the listed prices and percentages. Also replace the statistics heading '63.0% Avg Returns' with 'Trade Setups'; replace '20 Signals closed with average 63% returns' with 'Explore active and closed stock signals'; replace 'One free signal posted every week' with 'Entry, target and stop-loss references'; replace 'Earn $100-$200 Daily Income With Options. Learn More !' with 'Explore stock & option signals. Learn More !'. No other edits. Do not add any live or real-time badge, testimonials, guarantees, performance claims, new branding or watermark. The surrounding website will label this as an illustrative sample-data preview.",
+      "source": "/Users/palrasa/.codex/generated_images/01a142c4-8e66-7ce2-8c0c-40dadbdb334e/exec-c85afc3a-7e0d-4270-9b68-9fb3ba39c861.png"
+    },
+    {
+      "name": "political",
+      "prompt": "Use case: precise-object-edit. Edit target: attached Political Flow app screenshot. Make one localized edit ONLY: erase the yellow two-line text 'This is demo data, Subscribe for Live Real Time Political Trade Updates' and fill its exact area cleanly with the identical plain dark navy screen background. Keep the blank space where this banner was; do not move any other elements. Preserve ALL ticker symbols, politician names, transaction ranges, dates and all card text EXACTLY as originally shown, without adding or changing trades. Preserve EXACT full 726x1572 canvas and exact positions of simulator toolbar, iPhone body, screen boundaries, search field, filters, cards and bottom nav. Faithful screenshot edit, crisp UI text. Do not add any live or real-time badge, watermark or new text. The website will identify it as an edited illustrative preview.",
+      "source": "/Users/palrasa/.codex/generated_images/01a142c4-8e66-7ce2-8c0c-40dadbdb334e/exec-e7d7a73c-db46-4feb-be88-69a8030b0656.png"
+    },
+    {
+      "name": "insider",
+      "prompt": "Use case: precise-object-edit. Edit target: attached Insider Flow app screenshot. Make one localized edit ONLY: erase the yellow line 'This is demo data. Subscribe for live insider trades.' and fill its exact area cleanly with identical plain dark navy screen background. Keep the blank space where this banner was, no movement of other elements. Preserve all ticker symbols, insider names, roles, transaction values, share counts, prices, filing and transaction dates EXACTLY as shown, without adding or changing any transactions. Preserve exact full 726x1572 canvas and exact original positions of simulator toolbar, iPhone body, screen boundaries, title, search, filter, records and bottom navigation. Crisp faithful UI screenshot edit. Do not add a live badge, new text or watermark. The website will identify it as an edited illustrative preview.",
+      "source": "/Users/palrasa/.codex/generated_images/01a142c4-8e66-7ce2-8c0c-40dadbdb334e/exec-edfeac61-27c6-474f-80af-b6dd2e639351.png"
+    }
+  ]
+}

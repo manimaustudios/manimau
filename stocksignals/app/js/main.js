@@ -1,7 +1,5 @@
-jQuery(document).ready(function( $ ) {
+'use strict';
 
-  $(".navbar-collapse a").on('click', function() {
-    $(".navbar-collapse.collapse").removeClass('in');
-  });
-  
-});
+// The page and native FAQ controls work without JavaScript.
+const year = document.getElementById('year');
+if (year) year.textContent = new Date().getFullYear();

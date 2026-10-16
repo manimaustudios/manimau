@@ -1,0 +1,46 @@
+{
+  "generated_source": "/Users/palrasa/.codex/generated_images/01a142c4-8e66-7ce2-8c0c-40dadbdb334e/exec-73ca50b9-6ead-4d6e-b315-6d66d3387e7a.png",
+  "prompt": "Use case: text-localization. Edit target: attached Stock Signals marketing screenshot. Preserve the complete 853x1844 canvas, iPhone frame, toolbar, screen geometry, colors, headings, search, indexes, feature banners and bottom navigation EXACTLY. Edit ONLY the five table rows near the bottom. Replace the entire old row contents, retaining the four existing columns Symbol / Buy Target / Sell Target / Potential Gain, with these EXACT rows in order: MU | $931.24 | $1,396.86 | 50.00%; MSFT | $539.44 | $809.16 | 50.00%; SNDK | $1,394.83 | $1,673.80 | 20.00%; NBIS | $188.41 | $414.50 | 120.00%; AMZN | $254.76 | $305.71 | 20.00%. Exact accurate text is essential. Old SOFI, OXY, F and all old row numbers must disappear. For the table ONLY, reduce numeric font size slightly if required so dollar amounts with thousands separators fit with clear gaps between columns; preserve crisp type and alignment. Do not modify anything else, add rows, new badges, or text. These are illustrative scenarios using observed 15 October 2026 closing prices as reference entries, not actual signals; the surrounding website will disclose that targets/percentages are hypothetical.",
+  "reference_date": "2026-10-15",
+  "currency": "USD",
+  "source": "Stock Analysis historical closing prices (S&P Global data)",
+  "formula": "target = ROUND_HALF_UP(close * (1 + hypothetical_gain_pct / 100), 2); displayed gain = (target / close - 1) * 100 rounded to two decimals",
+  "note": "Closing prices are observed; entry references, targets and percentage scenarios are illustrative and are not actual app signals or forecasts.",
+  "rows": [
+    {
+      "ticker": "MU",
+      "close": "931.24",
+      "target": "1396.86",
+      "gain": "50.00",
+      "source": "https://stockanalysis.com/stocks/mu/history/"
+    },
+    {
+      "ticker": "MSFT",
+      "close": "539.44",
+      "target": "809.16",
+      "gain": "50.00",
+      "source": "https://stockanalysis.com/stocks/msft/history/"
+    },
+    {
+      "ticker": "SNDK",
+      "close": "1394.83",
+      "target": "1673.80",
+      "gain": "20.00",
+      "source": "https://stockanalysis.com/stocks/sndk/history/"
+    },
+    {
+      "ticker": "NBIS",
+      "close": "188.41",
+      "target": "414.50",
+      "gain": "120.00",
+      "source": "https://stockanalysis.com/stocks/nbis/history/"
+    },
+    {
+      "ticker": "AMZN",
+      "close": "254.76",
+      "target": "305.71",
+      "gain": "20.00",
+      "source": "https://stockanalysis.com/stocks/amzn/history/"
+    }
+  ]
+}
